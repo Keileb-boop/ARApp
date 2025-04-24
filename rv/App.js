@@ -1,0 +1,131 @@
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, Button, Alert } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+
+export default function App() {
+  const [weatherData, setWeatherData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const fetchWeatherData = () => {
+    setLoading(true);
+    fetch(
+      'https://api.open-meteo.com/v1/forecast?latitude=13.69&longitude=-89.19&current=temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover'
+    )
+      .then(res => res.json())
+      .then(data => {
+        setWeatherData(data.current);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchWeatherData();
+  }, []);
+
+  const toggleBackground = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const handleShowAR = () => {
+    Alert.alert('AR', 'Aquí podrías mostrar una vista en Realidad Aumentada 📱✨');
+  };
+
+  const bgColor = isDarkMode ? '#1E1E1E' : '#F2F4F8';
+  const cardColor = isDarkMode ? '#2C2C2C' : '#FFFFFF';
+  const textColor = isDarkMode ? '#E0E0E0' : '#333';
+
+  if (loading) {
+    return (
+      <View style={[styles.loaderContainer, { backgroundColor: bgColor }]}>
+        <ActivityIndicator size="large" color="#50BFA0" />
+        <Text style={[styles.loadingText, { color: textColor }]}>Cargando datos...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: bgColor }]}>
+      <Text style={[styles.title, { color: textColor }]}>Monitor Ambiental</Text>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Cambiar Fondo" onPress={toggleBackground} color={isDarkMode ? '#50BFA0' : '#2D3142'} />
+        <Button title="Actualizar Datos" onPress={fetchWeatherData} color="#4ECDC4" />
+        <Button title="Mostrar AR" onPress={handleShowAR} color="#FF6B6B" />
+      </View>
+
+      <View style={[styles.card, { backgroundColor: cardColor }]}>
+        <MaterialCommunityIcons name="thermometer" size={30} color="#FF6B6B" />
+        <Text style={[styles.label, { color: textColor }]}>Temperatura:</Text>
+        <Text style={[styles.value, { color: textColor }]}>{weatherData.temperature_2m}°C</Text>
+      </View>
+
+      <View style={[styles.card, { backgroundColor: cardColor }]}>
+        <MaterialCommunityIcons name="weather-hazy" size={30} color="#FFD93D" />
+        <Text style={[styles.label, { color: textColor }]}>Sensación térmica:</Text>
+        <Text style={[styles.value, { color: textColor }]}>{weatherData.apparent_temperature}°C</Text>
+      </View>
+
+      <View style={[styles.card, { backgroundColor: cardColor }]}>
+        <MaterialCommunityIcons name="water-percent" size={30} color="#6BCB77" />
+        <Text style={[styles.label, { color: textColor }]}>Humedad:</Text>
+        <Text style={[styles.value, { color: textColor }]}>{weatherData.relative_humidity_2m}%</Text>
+      </View>
+
+      <View style={[styles.card, { backgroundColor: cardColor }]}>
+        <MaterialCommunityIcons name="weather-cloudy" size={30} color="#A1A1A1" />
+        <Text style={[styles.label, { color: textColor }]}>Cobertura de nubes:</Text>
+        <Text style={[styles.value, { color: textColor }]}>{weatherData.cloud_cover}%</Text>
+      </View>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 60,
+    paddingBottom: 40,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  card: {
+    width: '100%',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 4,
+    alignItems: 'center',
+  },
+  label: {
+    marginTop: 10,
+    fontSize: 16,
+  },
+  value: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  buttonContainer: {
+    width: '100%',
+    marginBottom: 20,
+    gap: 10,
+  },
+});
