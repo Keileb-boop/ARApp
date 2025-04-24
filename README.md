@@ -1,7 +1,7 @@
 # ARApp
 Repositorio para la investigación aplicada 2 de la materia DPS Teoría
 
-Carpeta del proyecto y pasos de instalación en la rama ""
+Carpeta del proyecto y pasos de instalación en la rama "app-AR"
 
 Colaboradores:
 - Camila Elizabeth Castillo Joya CJ220498
