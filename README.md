@@ -1,7 +1,6 @@
 # ARApp
 Repositorio para la investigación aplicada 2 de la materia DPS Teoría
 
-Carpeta ubicada en la rama "______"
 
 🛠️Pasos para la instalación de la aplicación en VS Code🛠️
 
@@ -11,3 +10,11 @@ Carpeta ubicada en la rama "______"
 ✅ Luego de tener instaladas todas las librerias necesarias procedemos a correr el proyecto
   con el comando **npm start** y junto con la aplicación de Expo GO en dispositivo físico o
   emulado en Android Studio abrimos nuestra aplicación.
+
+
+  *********************************************************************************************************
+
+💻Tecnologías utilizadas💻
+
+- Reac-Native
+- Viro-react (implementado pero sin función)
